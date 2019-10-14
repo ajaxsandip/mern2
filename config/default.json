@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://ajaxsandip:kHgcZwgQiiQ4YUYQ@cluster0-rlyri.mongodb.net/testing?retryWrites=true&w=majority",
+  "secret": "secretweapon"
+}
