@@ -16,19 +16,21 @@ const auth = require('../middleware/auth');
 router.post(
   '/',
   [
-    check('email', 'Please Enter Email').isEmail(),
-    check('password', 'Please enter the Password')
-      .not()
-      .isEmpty()
+    check('email', 'Please Enter Email').not(),
+    check('password', 'Please enter the Password').not()
   ],
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('in erroer');
       return res.status(400).json({ errors: errors.array() });
     }
     const { email, password } = req.body;
+    console.log('reqbody', req.body);
+    console.log('1email', email);
 
     User.findOne({ email }).then(user => {
+      console.log('1user', user);
       if (!user) {
         return res.status(400).json('Invalid Credentials');
       }
@@ -60,8 +62,10 @@ router.post(
 );
 
 router.get('/', auth, (req, res) => {
+  console.log(req.user);
   User.findById(req.user.id)
     .then(user => {
+      console.log(user);
       res.json(user);
     })
     .catch(err => {

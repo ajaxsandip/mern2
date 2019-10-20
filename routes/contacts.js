@@ -5,6 +5,7 @@ const { check, validationResult } = require('express-validator/check');
 const auth = require('../middleware/auth');
 const User = require('../models/User');
 const Contact = require('../models/Contact');
+const mongoose = require('mongoose');
 
 router.post(
   '/',
@@ -44,10 +45,27 @@ router.get('/', auth, (req, res) => {
     });
 });
 router.put('/:id', (req, res) => {
-  res.send('Update Contacts');
+  console.log('laiilla', req.params.id, { $set: req.body });
+  // const idi = mongoose.Types.ObjectId(req.params.id);
+  // console.log(idi);
+  Contact.findByIdAndUpdate(req.params.id.slice(1), { $set: req.body })
+    .then(contacts => {
+      res.json(contacts);
+    })
+    .catch(err => {
+      console.log(err);
+      res.json('Authentication Failed');
+    });
 });
 router.delete('/:id', (req, res) => {
-  res.send('Delete Contacts');
+  console.log('id', req.params.id);
+  Contact.findByIdAndRemove(req.params.id)
+    .then(contacts => {
+      res.json(contacts);
+    })
+    .catch(err => {
+      res.json('Authentication Failed');
+    });
 });
 
 module.exports = router;
